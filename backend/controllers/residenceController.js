@@ -9,6 +9,7 @@
 */
 const asyncHandler = require('express-async-handler')
 
+const Residence = require('../models/residenceModel')
 
 // @desc Set residence
 // @route POST /api/residences
@@ -20,7 +21,11 @@ const setResidence = asyncHandler(async (req, res) => {
         throw new Error('Please add a text field')
     }
 
-    res.status(200).json({ message: 'Set residence' })
+    const residence = await Residence.create({
+        text: req.body.text
+    })
+
+    res.status(200).json(residence)
 })
 
 // @desc Get residence
@@ -28,6 +33,8 @@ const setResidence = asyncHandler(async (req, res) => {
 // @access Private
 
 const getResidence = asyncHandler(async (req, res) => {
+    const residences = await Residence.find()
+
     res.status(200).json({ message: 'Get residence' })
 })
 
@@ -36,7 +43,18 @@ const getResidence = asyncHandler(async (req, res) => {
 // @access Private
 
 const updateResidence = asyncHandler(async (req, res) => {
-    res.status(200).json({ message: 'Update residence' })
+    const residence = await Residence.findById(req.params.id)
+
+    if(!residence){
+        res.status(400)
+        throw new Error('Residence not found')
+    }
+
+    const updatedResidence = await Residence.findByIdAndUpdate(req.params.id, req.
+        body, {new: true,
+        })
+
+    res.status(200).json(updatedResidence)
 })
 
 // @desc Delete residences
@@ -44,7 +62,16 @@ const updateResidence = asyncHandler(async (req, res) => {
 // @access Private
 
 const deleteResidence = asyncHandler(async (req, res) => {
-    res.status(200).json({ message: 'Delete residence' })
+    const residence = await Residence.findById(req.params.id)
+
+    if(!residence){
+        res.status(400)
+        throw new Error('Residence not found')
+    }
+
+    await residence.remove()
+
+    res.status(200).json({id: req.params.id})
 })
 
 module.exports = {

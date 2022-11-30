@@ -1,0 +1,12 @@
+26 Nov 2022, 06:00 am
+
+--- (Create MongoDB Database)
+    -- The goal is to have three different types of users:
+        (1) Student 
+        (2) Agent
+        (3) Property Owner
+    -- Based on who is signed in, the program should serve views
+        relevant to the type of user.
+        # Students should see the different agents on the platform.
+        # Agents should see the numerous property owners and students.
+        # Propert owners should see different students and agents.
